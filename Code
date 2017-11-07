@@ -9,11 +9,12 @@ modifieddata.to_csv('md.csv', index=False)
 data=data.dropna()
 data
 
-#Basebal Reference uses LgAvg per 600 PA
 data = data[data['yearID'] >= 2003]
 
 data = data[['yearID', 'teamID', 'G', 'AB', 'R' 'H', '2B', '3B', 'HR', 'BB', 'SF', 'HBP', 'SH']]
 data['PA'] = (data['AB'] + data['BB'] + data['HBP'] + data['SF'] + data['SH'])
+
+#Baseball Reference uses LgAvg per 600 PA
 data = data[data['PA'] >= 600]
 
 
