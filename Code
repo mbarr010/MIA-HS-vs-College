@@ -1,0 +1,62 @@
+import pandas as pd
+import scipy as sp
+import matplotlib.pyplot as plt
+import numpy as np
+data = pd.read_csv('C:\\GitHub\\lahman-csv_2014-02-14\\Batting.csv')
+modifieddata=data.dropna()
+modifieddata.isnull().sum()
+modifieddata.to_csv('md.csv', index=False)
+data=data.dropna()
+data
+
+#Basebal Reference uses LgAvg per 600 PA
+data = data[data['yearID'] >= 2003]
+
+data = data[['yearID', 'teamID', 'G', 'AB', 'R' 'H', '2B', '3B', 'HR', 'BB', 'SF', 'HBP', 'SH']]
+data['PA'] = (data['AB'] + data['BB'] + data['HBP'] + data['SF'] + data['SH'])
+data = data[data['PA'] >= 600]
+
+
+data['BA'] = (data['H']/data['AB'])
+data['OBP'] = (data['H'] + data['BB'] + data['HBP']) / (data['AB'] + data['BB'] + data['HBP'] + data['SF'])
+data['SLG'] = (data['H'] + data['2B'] + (2*data['3B']) + (3*data['HR'])) / data['AB']
+
+import statsmodels.formula.api as sm
+
+#First Model
+runs_reg_model1 = sm.ols("R~OBP+SLG+BA",data)
+runs_reg1 = runs_reg_model1.fit()
+#Second Model
+runs_reg_model2 = sm.ols("R~OBP+SLG",data)
+runs_reg2 = runs_reg_model2.fit()
+#Third Model
+runs_reg_model3 = sm.ols("R~BA",data)
+runs_reg3 = runs_reg_model3.fit()
+#Fourth Model
+runs_reg_model4 = sm.ols("R~OBP",data)
+runs_reg4 = runs_reg_model4.fit()
+#Fifth Model
+runs_reg_model5 = sm.ols("R~SLG",data)
+runs_reg5 = runs_reg_model5.fit()
+
+
+runs_reg1.summary()
+runs_reg2.summary()
+runs_reg3.summary()
+runs_reg4.summary()
+runs_reg5.summary()
+
+plt.hist(data['BA'])
+plt.title('BA 2003-2013')
+plt.xlabel ('value')
+plt.ylabel ('Frequency')
+
+plt.hist(data['OBP'])
+plt.title('OBP 2003-2013')
+plt.xlabel ('value')
+plt.ylabel ('Frequency')
+
+plt.hist(data['SLG'])
+plt.title('SLG 2003-2013')
+plt.xlabel ('value')
+plt.ylabel ('Frequency')
