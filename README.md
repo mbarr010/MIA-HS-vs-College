@@ -1,4 +1,4 @@
-Regression models on BA, SLG, OBP in relation to runs from 2003-2013
+Regression models on BA, SLG, OBP in relation to runs from 2003-2013. Data was used from Sean Lahman's database, http://www.seanlahman.com/baseball-archive/statistics/. 
 
 Baseball Reference using LgAvg per 600 PA, so I only used the statistics of players who had 600+ appareances
 
